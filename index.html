@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oasis Media Productions</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav>
+    <a href="index.html" class="nav-logo">Oasis Media</a>
+
+    <div class="nav-links">
+      <button class="nav-link-btn" data-panel="startseite">Startseite</button>
+      <button class="nav-link-btn" data-panel="ueber-uns">Über uns</button>
+      <button class="nav-link-btn" data-panel="dienstleistungen">Dienstleistungen</button>
+    </div>
+
+    <button class="menu-btn" id="menuBtn" aria-label="Menü öffnen" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="dropdown" id="dropdown">
+      <a href="projects.html">Referenzen</a>
+      <a href="price.html">Preise</a>
+      <a href="kontakt.html">Kontakt</a>
+    </div>
+  </nav>
+
+  <!-- ===== NAV PANEL BACKDROP ===== -->
+  <div class="panel-backdrop" id="panelBackdrop"></div>
+
+  <!-- ===== PANEL: STARTSEITE ===== -->
+  <div class="nav-panel" id="panel-startseite">
+    <div class="nav-panel-inner">
+      <button class="panel-close-btn" onclick="closePanel()" aria-label="Schließen">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <h2>Willkommen bei <span>Oasis Media</span></h2>
+      <p class="panel-lead">Dein Partner für professionelle Videoproduktion in NRW. Von der ersten Idee bis zur fertigen Produktion — alles aus einer Hand.</p>
+      <div class="panel-cta-row">
+        <a href="projects.html" class="btn-solid">Referenzen ansehen</a>
+        <a href="price.html" class="btn-outline">Preise ansehen</a>
+        <a href="kontakt.html" class="btn-outline">Kontakt aufnehmen</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL: ÜBER UNS ===== -->
+  <div class="nav-panel" id="panel-ueber-uns">
+    <div class="nav-panel-inner">
+      <button class="panel-close-btn" onclick="closePanel()" aria-label="Schließen">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <h2>Über <span>uns</span></h2>
+      <p class="panel-lead">Oasis Media Productions ist ein kreatives Videoproduktions-Studio aus Köln. Wir produzieren hochwertige Image Videos, Social Media Content und Event-Dokumentationen — für Unternehmen, die wirklich auffallen wollen.</p>
+      <div class="panel-about-grid">
+        <div class="panel-about-item">
+          <div class="panel-about-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Standort</strong>
+            <span>Mauritiuswall 38, 50676 Köln</span>
+          </div>
+        </div>
+        <div class="panel-about-item">
+          <div class="panel-about-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.67a19.79 19.79 0 01-3.07-8.67A2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.16a16 16 0 006.93 6.93l1.51-1.52a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Telefon</strong>
+            <span>+49 (0) 1731656090</span>
+          </div>
+        </div>
+        <div class="panel-about-item">
+          <div class="panel-about-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div>
+            <strong>E-Mail</strong>
+            <span>parzival.koop@gmail.de</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL: DIENSTLEISTUNGEN ===== -->
+  <div class="nav-panel" id="panel-dienstleistungen">
+    <div class="nav-panel-inner">
+      <button class="panel-close-btn" onclick="closePanel()" aria-label="Schließen">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <h2>Unsere <span>Dienstleistungen</span></h2>
+      <div class="panel-services-grid">
+
+        <div class="panel-service-card">
+          <div class="panel-service-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="6" x2="15" y2="6"/><circle cx="12" cy="17" r="1"/>
+            </svg>
+          </div>
+          <h3>Social Media Content</h3>
+          <p>Kurze, wirkungsvolle Shorts für Instagram, TikTok & Co. — optimiert für maximale Reichweite.</p>
+          <span class="panel-service-price">ab €499</span>
+          <a href="price.html" class="panel-service-link">Mehr erfahren →</a>
+        </div>
+
+        <div class="panel-service-card">
+          <div class="panel-service-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><polygon points="10,8 16,11 10,14"/>
+            </svg>
+          </div>
+          <h3>Image Video</h3>
+          <p>Professionelle Unternehmensvideos, die deine Marke stark präsentieren und bei Kunden im Gedächtnis bleiben.</p>
+          <span class="panel-service-price">ab €999</span>
+          <a href="price.html" class="panel-service-link">Mehr erfahren →</a>
+        </div>
+
+        <div class="panel-service-card">
+          <div class="panel-service-icon">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/>
+            </svg>
+          </div>
+          <h3>Company Review</h3>
+          <p>Vollständige Bild- und Videodokumentation deines Unternehmens oder Events — für nachhaltige Außenwirkung.</p>
+          <span class="panel-service-price">ab €1.499</span>
+          <a href="price.html" class="panel-service-link">Mehr erfahren →</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <main class="hero">
+    <div class="hero-bg"></div>
+    <h1>Oasis Media<br /><span>Productions</span></h1>
+    <p class="hero-sub">Image Videos · social Media Content · Company Reviews</p>
+    <div class="hero-cta">
+      <a href="projects.html" class="btn-solid">Projekte ansehen</a>
+      <a href="kontakt.html" class="btn-outline">Kontakt aufnehmen</a>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <span class="footer-copy">&copy; 2026 Oasis Media Productions. Alle Rechte vorbehalten.</span>
+  </footer>
+  <div class="bottom-bar">
+    <a href="impressum.html" class="impressum-btn">Impressum</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
