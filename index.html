@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Oasis Media Productions</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- ===== NAV ===== -->
   <nav>
-    <a href="index.html" class="nav-logo">Oasis Media</a>
+    <a href="index.html" class="nav-logo">Oasis Media Productions</a>
 
     <div class="nav-links">
       <button class="nav-link-btn" data-panel="startseite">Startseite</button>
@@ -42,7 +42,7 @@
           <path d="M18 6L6 18M6 6l12 12"/>
         </svg>
       </button>
-      <h2>Willkommen bei <span>Oasis Media</span></h2>
+      <h2>Willkommen bei <span>Oasis Media Productions</span></h2>
       <p class="panel-lead">Dein Partner für professionelle Videoproduktion in NRW. Von der ersten Idee bis zur fertigen Produktion — alles aus einer Hand.</p>
       <div class="panel-cta-row">
         <a href="projects.html" class="btn-solid">Referenzen ansehen</a>
@@ -71,7 +71,7 @@
           </div>
           <div>
             <strong>Standort</strong>
-            <span>Mauritiuswall 38, 50676 Köln</span>
+            <span>Köln</span>
           </div>
         </div>
         <div class="panel-about-item">
@@ -118,8 +118,8 @@
             </svg>
           </div>
           <h3>Social Media Content</h3>
-          <p>Kurze, wirkungsvolle Shorts für Instagram, TikTok & Co. — optimiert für maximale Reichweite.</p>
-          <span class="panel-service-price">ab €499</span>
+          <p> 5 x wirkungsvolle Shorts für social media wie Instagram, TikTok & Co. — optimiert für maximale Reichweite.</p>
+          <span class="panel-service-price">nur €499</span>
           <a href="price.html" class="panel-service-link">Mehr erfahren →</a>
         </div>
 
@@ -131,7 +131,7 @@
           </div>
           <h3>Image Video</h3>
           <p>Professionelle Unternehmensvideos, die deine Marke stark präsentieren und bei Kunden im Gedächtnis bleiben.</p>
-          <span class="panel-service-price">ab €999</span>
+          <span class="panel-service-price">nur €999</span>
           <a href="price.html" class="panel-service-link">Mehr erfahren →</a>
         </div>
 
@@ -143,7 +143,7 @@
           </div>
           <h3>Company Review</h3>
           <p>Vollständige Bild- und Videodokumentation deines Unternehmens oder Events — für nachhaltige Außenwirkung.</p>
-          <span class="panel-service-price">ab €1.499</span>
+          <span class="panel-service-price">nur €1.499</span>
           <a href="price.html" class="panel-service-link">Mehr erfahren →</a>
         </div>
 
@@ -151,16 +151,18 @@
     </div>
   </div>
 
-  <!-- ===== HERO ===== -->
-  <main class="hero">
-    <div class="hero-bg"></div>
-    <h1>Oasis Media<br /><span>Productions</span></h1>
-    <p class="hero-sub">Image Videos · social Media Content · Company Reviews</p>
-    <div class="hero-cta">
-      <a href="projects.html" class="btn-solid">Projekte ansehen</a>
-      <a href="kontakt.html" class="btn-outline">Kontakt aufnehmen</a>
-    </div>
-  </main>
+  <!-- ===== HERO + FRAME SCROLL ===== -->
+  <div class="frame-scroll-section" id="frameScrollSection">
+    <main class="hero">
+      <canvas id="frameCanvas"></canvas>
+      <h1>Oasis Media<br /><span>Productions</span></h1>
+      <p class="hero-sub">Image Videos · social Media Content · Company Reviews</p>
+      <div class="hero-cta">
+        <a href="projects.html" class="btn-solid">Projekte ansehen</a>
+        <a href="kontakt.html" class="btn-outline">Kontakt aufnehmen</a>
+      </div>
+    </main>
+  </div>
 
   <!-- ===== FOOTER ===== -->
   <footer>
@@ -168,6 +170,20 @@
   </footer>
   <div class="bottom-bar">
     <a href="impressum.html" class="impressum-btn">Impressum</a>
+  </div>
+
+  <!-- ===== COOKIE BANNER ===== -->
+  <div class="cookie-banner" id="cookieBanner">
+    <div class="cookie-inner">
+      <p class="cookie-text">
+        Wir verwenden Cookies, um deine Erfahrung auf unserer Website zu verbessern und Inhalte zu personalisieren.
+        <a href="impressum.html">Mehr erfahren</a>
+      </p>
+      <div class="cookie-btns">
+        <button class="btn-solid" onclick="acceptCookies()">Akzeptieren</button>
+        <button class="btn-outline" onclick="declineCookies()">Ablehnen</button>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>

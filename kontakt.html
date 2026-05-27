@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kontakt — Oasis Media Productions</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- ===== NAV ===== -->
   <nav>
-    <a href="index.html" class="nav-logo">Oasis Media</a>
+    <a href="index.html" class="nav-logo">Oasis Media Productions</a>
 
     <button class="menu-btn" id="menuBtn" aria-label="Menü öffnen" aria-expanded="false">
       <span></span>
@@ -49,12 +49,12 @@
           <span>+49 (0) 1731656090</span>
         </div>
         <div class="kontakt-detail">
-          <div class="icon">&#9679;</div>
-          <span>Mauritiuswall 38, 50676 Köln</span>
-        </div>
-        <div class="kontakt-detail">
           <div class="icon">◷</div>
           <span>Mo – Fr: 09:00 – 18:00 Uhr</span>
+        </div>
+        <div class="kontakt-detail">
+          <div class="icon">&#9679;</div>
+          <span>50676 Köln</span>
         </div>
       </div>
 
@@ -91,6 +91,20 @@
   </footer>
   <div class="bottom-bar">
     <a href="impressum.html" class="impressum-btn">Impressum</a>
+  </div>
+
+  <!-- ===== COOKIE BANNER ===== -->
+  <div class="cookie-banner" id="cookieBanner">
+    <div class="cookie-inner">
+      <p class="cookie-text">
+        Wir verwenden Cookies, um deine Erfahrung auf unserer Website zu verbessern und Inhalte zu personalisieren.
+        <a href="impressum.html">Mehr erfahren</a>
+      </p>
+      <div class="cookie-btns">
+        <button class="btn-solid" onclick="acceptCookies()">Akzeptieren</button>
+        <button class="btn-outline" onclick="declineCookies()">Ablehnen</button>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>

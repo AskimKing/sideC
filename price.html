@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Preise — Oasis Media Productions</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- ===== NAV ===== -->
   <nav>
-    <a href="index.html" class="nav-logo">Oasis Media</a>
+    <a href="index.html" class="nav-logo">Oasis Media Productions</a>
 
     <button class="menu-btn" id="menuBtn" aria-label="Menü öffnen" aria-expanded="false">
       <span></span>
@@ -36,9 +36,9 @@
       <div class="price-card">
         <h3>Shorts</h3>
         <div class="price-amount"><sup>€</sup>499</div>
-        <p class="price-period">pro Projekt</p>
+        <p class="price-period">Für 5 Shorts</p>
         <ul class="price-features">
-          <li>1 Drehtag (bis 4 h)</li>
+          <li>1 Drehtag (bis 4 h vor Ort)</li>
           <li>Bis zu 60 Sekunden Endschnitt</li>
           <li>1 Revisionsrunden</li>
           <li>Lieferung als MP4 (1080p)</li>
@@ -52,9 +52,9 @@
       <div class="price-card featured">
         <h3>Image Video</h3>
         <div class="price-amount"><sup>€</sup>999</div>
-        <p class="price-period">pro Projekt</p>
+        <p class="price-period">Für 1 Video</p>
         <ul class="price-features">
-          <li>1 Drehtage (bis 8 h)</li>
+          <li>1 Drehtage (bis 6 h vor Ort)</li>
           <li>Bis zu 3 Minuten Endschnitt</li>
           <li>1 Revisionsrunden</li>
           <li>Lieferung 4K</li>
@@ -67,9 +67,9 @@
       <div class="price-card">
         <h3>Company Review</h3>
         <div class="price-amount"><sup>€</sup>1.499</div>
-        <p class="price-period">pro Projekt</p>
+        <p class="price-period">Für 1 Video</p>
         <ul class="price-features">
-          <li>Bis zu 1 Drehtag</li>
+          <li>1 Drehtag (bis 8 hvor Ort)</li>
           <li>Bis zu 10 Minuten Endschnitt</li>
           <li>1 Revisionen</li>
           <li>Lieferung 4K + alle Formate</li>
@@ -83,6 +83,14 @@
     <p style="text-align:center;margin-top:48px;font-size:0.82rem;color:rgba(255,255,255,0.35);letter-spacing:0.08em;">
       Individuelle Angebote auf Anfrage. Alle Preise zzgl. MwSt.
     </p>
+
+    <!-- ===== CTA ===== -->
+    <div class="price-cta">
+      <h2 class="price-cta-title">Let's create <span>something</span></h2>
+      <p class="price-cta-text">Du hast ein Projekt im Kopf oder möchtest einfach mehr über unsere Arbeit erfahren? Schreib uns — wir melden uns innerhalb von 24 Stunden.</p>
+      <a href="kontakt.html" class="btn-solid">Jetzt Kontakt aufnehmen</a>
+    </div>
+
   </main>
 
   <!-- ===== FOOTER ===== -->
@@ -91,6 +99,20 @@
   </footer>
   <div class="bottom-bar">
     <a href="impressum.html" class="impressum-btn">Impressum</a>
+  </div>
+
+  <!-- ===== COOKIE BANNER ===== -->
+  <div class="cookie-banner" id="cookieBanner">
+    <div class="cookie-inner">
+      <p class="cookie-text">
+        Wir verwenden Cookies, um deine Erfahrung auf unserer Website zu verbessern und Inhalte zu personalisieren.
+        <a href="impressum.html">Mehr erfahren</a>
+      </p>
+      <div class="cookie-btns">
+        <button class="btn-solid" onclick="acceptCookies()">Akzeptieren</button>
+        <button class="btn-outline" onclick="declineCookies()">Ablehnen</button>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>

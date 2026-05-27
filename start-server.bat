@@ -7,13 +7,13 @@ echo   OASIS MEDIA PRODUCTIONS
 echo   Lokaler Webserver wird gestartet...
 echo  =========================================
 echo.
-echo  Browser oeffnen unter:
-echo.
-echo       http://localhost:8000
-echo.
+echo  Browser wird automatisch geoeffnet...
 echo  Zum Beenden: Strg + C druecken
 echo.
 cd /d "%~dp0"
+
+:: Browser automatisch öffnen (nach kurzer Verzögerung)
+start "" cmd /c "timeout /t 2 >nul && start http://localhost:8000"
 
 :: Versuche Python 3
 python -m http.server 8000 2>nul
