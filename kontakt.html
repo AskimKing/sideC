@@ -91,14 +91,16 @@
   </footer>
   <div class="bottom-bar">
     <a href="impressum.html" class="impressum-btn">Impressum</a>
+    <a href="datenschutz.html" class="impressum-btn">Datenschutz</a>
   </div>
 
   <!-- ===== COOKIE BANNER ===== -->
   <div class="cookie-banner" id="cookieBanner">
     <div class="cookie-inner">
       <p class="cookie-text">
-        Wir verwenden Cookies, um deine Erfahrung auf unserer Website zu verbessern und Inhalte zu personalisieren.
-        <a href="impressum.html">Mehr erfahren</a>
+        Diese Website speichert deine Cookie-Einwilligung lokal in deinem Browser. Das Kontaktformular
+        wird über Formspree (USA) verarbeitet. Es werden keine Tracking- oder Werbe-Cookies gesetzt.
+        <a href="datenschutz.html">Datenschutzerklärung</a>
       </p>
       <div class="cookie-btns">
         <button class="btn-solid" onclick="acceptCookies()">Akzeptieren</button>
@@ -111,8 +113,25 @@
   <script>
     function handleSubmit(e) {
       e.preventDefault();
-      document.getElementById('form-msg').style.display = 'block';
-      e.target.reset();
+      const form = e.target;
+      const data = new FormData(form);
+
+      fetch('https://formspree.io/f/mgoqrgze', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(function(response) {
+        if (response.ok) {
+          document.getElementById('form-msg').style.display = 'block';
+          form.reset();
+        } else {
+          alert('Fehler beim Senden. Bitte versuche es erneut.');
+        }
+      })
+      .catch(function() {
+        alert('Fehler beim Senden. Bitte überprüfe deine Internetverbindung.');
+      });
     }
   </script>
 </body>
