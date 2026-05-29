@@ -41,7 +41,7 @@ nav {
   padding: 22px 40px;
   background: rgba(0, 0, 0, 0.92);
   backdrop-filter: blur(6px);
-  border-bottom: 3.6px solid #0080FF;
+  border-bottom: 3.6px solid #FF8C00;
   box-shadow: 0 4px 18px rgba(255, 140, 0, 0.7);
 }
 
@@ -280,7 +280,7 @@ footer {
   left: 0;
   width: 100%;
   z-index: 890;
-  border-top: 3.6px solid #0080FF;
+  border-top: 3.6px solid #FF8C00;
   box-shadow: 0 -4px 18px rgba(255, 140, 0, 0.7);
   background: var(--black);
   padding: 22px 40px;

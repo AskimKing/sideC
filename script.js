@@ -34,6 +34,9 @@ function closeLightbox() {
 }
 
 // ---- Frame Scroll Animation (index.html only) ----
+history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 (function () {
   const canvas  = document.getElementById('frameCanvas');
   const section = document.getElementById('frameScrollSection');
