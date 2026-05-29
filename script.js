@@ -113,17 +113,30 @@ window.scrollTo(0, 0);
     // Fade in scroll label from top after hero text is gone
     const lblP = Math.max(0, (p - 0.6) / 0.25);
     if (heroScrollLbl) {
-      heroScrollLbl.style.opacity   = lblP;
-      heroScrollLbl.style.transform = `translateY(calc(-50% + ${(1 - lblP) * -40}px))`;
+      heroScrollLbl.style.opacity       = lblP;
+      heroScrollLbl.style.transform     = `translateY(calc(-50% + ${(1 - lblP) * -40}px))`;
+      heroScrollLbl.style.pointerEvents = lblP >= 1 ? 'auto' : 'none';
     }
 
     requestAnimationFrame(loop);
   }
 
-  for (let i = 1; i <= frameCount; i++) {
+  // Load frame 1 first at high priority and draw immediately
+  const firstImg = new Image();
+  firstImg.fetchPriority = 'high';
+  firstImg.src = 'frame_0001.png';
+  firstImg.onload = () => {
+    frames[0] = firstImg;
+    loaded++;
+    resizeCanvas();
+  };
+  frames[0] = firstImg;
+
+  // Load remaining frames
+  for (let i = 2; i <= frameCount; i++) {
     const img = new Image();
     img.src = 'frame_' + String(i).padStart(4, '0') + '.png';
-    img.onload = () => { if (++loaded === 1) resizeCanvas(); };
+    img.onload = () => { loaded++; };
     frames[i - 1] = img;
   }
 
