@@ -46,69 +46,90 @@ window.scrollTo(0, 0);
   const frameCount = 73;
   const frames     = new Array(frameCount);
   let   loaded     = 0;
-  let   currentFrame = 0;
+  let   current    = 0;
 
-  // Resize canvas to match its actual CSS display size
+  const heroH1        = section.querySelector('h1');
+  const heroSub       = section.querySelector('.hero-sub');
+  const heroCta       = section.querySelector('.hero-cta');
+  const heroScrollLbl = document.getElementById('heroScrollLabel');
+
   function resizeCanvas() {
     canvas.width  = canvas.offsetWidth  || Math.round(window.innerWidth * 0.6);
     canvas.height = canvas.offsetHeight || window.innerHeight;
-    drawFrame(currentFrame);
+    drawFrame(Math.round(current));
   }
 
-  // Draw a single frame centered + cover
   function drawFrame(index) {
     const img = frames[index];
     if (!img || !img.complete || !img.naturalWidth) return;
-
-    const cw = canvas.width;
-    const ch = canvas.height;
+    const cw = canvas.width, ch = canvas.height;
     const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
-    const w = img.naturalWidth  * scale;
-    const h = img.naturalHeight * scale;
-    const x = (cw - w) / 2;
-    const y = (ch - h) / 2;
-
+    const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
+    const ox = (cw - w) / 2, oy = (ch - h) / 2;
     ctx.clearRect(0, 0, cw, ch);
-    ctx.drawImage(img, x, y, w, h);
+    ctx.drawImage(img, ox, oy, w, h);
+    // Cover watermark in lower-right corner
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(ox + w * 0.72, oy + h * 0.9136, w * 0.28, h * 0.0864);
   }
 
-  // Preload all frames
+  function getTarget() {
+    const rect     = section.getBoundingClientRect();
+    const total    = section.offsetHeight - window.innerHeight;
+    const scrolled = Math.max(0, -rect.top);
+    return Math.min(scrolled / total, 1) * (frameCount - 1);
+  }
+
+  function loop() {
+    const target = getTarget();
+    const diff   = target - current;
+    if (Math.abs(diff) > 0.05) {
+      current += diff * 0.18;
+      drawFrame(Math.round(current));
+    } else if (current !== target) {
+      current = target;
+      drawFrame(Math.round(current));
+    }
+
+    const p = current / (frameCount - 1); // 0 → 1
+
+    // Slide canvas to the right
+    canvas.style.transform = `translateY(-50%) translateX(${p * 52}vw)`;
+
+    // Animate mask: fade-right at start → fade-left at end
+    const lm   = Math.round(p * 12);
+    const rm   = Math.round(75 + p * 25);
+    const rt   = Math.round(90 + p * 25);
+    const mask = `linear-gradient(to right, transparent 0%, black ${lm}%, black ${rm}%, transparent ${rt}%)`;
+    canvas.style.webkitMaskImage = mask;
+    canvas.style.maskImage       = mask;
+
+    // Fade out hero text in the first 60% of the scroll
+    const textOpacity = Math.max(0, 1 - p / 0.6);
+    if (heroH1)  heroH1.style.opacity  = textOpacity;
+    if (heroSub) heroSub.style.opacity = textOpacity;
+    if (heroCta) heroCta.style.opacity = textOpacity;
+
+    // Fade in scroll label from top after hero text is gone
+    const lblP = Math.max(0, (p - 0.6) / 0.25);
+    if (heroScrollLbl) {
+      heroScrollLbl.style.opacity   = lblP;
+      heroScrollLbl.style.transform = `translateY(calc(-50% + ${(1 - lblP) * -40}px))`;
+    }
+
+    requestAnimationFrame(loop);
+  }
+
   for (let i = 1; i <= frameCount; i++) {
     const img = new Image();
-    const num = String(i).padStart(4, '0');
-    img.src = 'frame_' + num + '.png';
-    img.onload = function () {
-      loaded++;
-      if (loaded === 1) {
-        resizeCanvas(); // Draw first frame as soon as it loads
-      }
-    };
+    img.src = 'frame_' + String(i).padStart(4, '0') + '.png';
+    img.onload = () => { if (++loaded === 1) resizeCanvas(); };
     frames[i - 1] = img;
   }
 
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
-
-  // Scroll → frame index
-  let ticking = false;
-  window.addEventListener('scroll', function () {
-    if (!ticking) {
-      requestAnimationFrame(function () {
-        const rect     = section.getBoundingClientRect();
-        const total    = section.offsetHeight - window.innerHeight;
-        const scrolled = Math.max(0, -rect.top);
-        const progress = Math.min(scrolled / total, 1);
-        const index    = Math.min(Math.round(progress * (frameCount - 1)), frameCount - 1);
-
-        if (index !== currentFrame) {
-          currentFrame = index;
-          drawFrame(currentFrame);
-        }
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
+  requestAnimationFrame(loop);
 })();
 
 // ---- Nav Panels (Startseite / Über uns / Dienstleistungen — index.html only) ----
@@ -158,6 +179,42 @@ function initCookieBanner() {
 }
 
 // ---- Menu (present on every page) ----
+function equalizeScrollLines() {
+  const line1 = document.querySelector('.hsl-line1');
+  const line2 = document.querySelector('.hsl-line2');
+  if (!line1 || !line2) return;
+
+  line1.style.letterSpacing = '';
+  line2.style.letterSpacing = '';
+
+  // Range-based measurement: accurate even when parent has opacity:0
+  function textW(el) {
+    const r = document.createRange();
+    r.selectNodeContents(el);
+    return r.getBoundingClientRect().width;
+  }
+
+  const w1   = textW(line1);
+  const w2   = textW(line2);
+  const diff = w1 - w2;
+  if (Math.abs(diff) < 0.5) return;
+
+  // letter-spacing L aligns last-char right edges when L = diff / (N-1)
+  if (diff > 0) {
+    const n = line2.textContent.trim().length;
+    line2.style.letterSpacing = (diff / (n - 1)) + 'px';
+  } else {
+    const n = line1.textContent.trim().length;
+    line1.style.letterSpacing = (Math.abs(diff) / (n - 1)) + 'px';
+  }
+}
+
+document.fonts.ready.then(() => {
+  equalizeScrollLines();
+  setTimeout(equalizeScrollLines, 150); // fallback after clamp layout settles
+});
+window.addEventListener('resize', equalizeScrollLines);
+
 document.addEventListener('DOMContentLoaded', () => {
   const btn      = document.getElementById('menuBtn');
   const dropdown = document.getElementById('dropdown');
