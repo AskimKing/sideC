@@ -93,8 +93,12 @@ window.scrollTo(0, 0);
 
     const p = current / (frameCount - 1); // 0 → 1
 
-    // Slide canvas to the right
-    canvas.style.transform = `translateY(-50%) translateX(${p * 52}vw)`;
+    // Slide canvas to the right (desktop only)
+    if (window.innerWidth > 768) {
+      canvas.style.transform = `translateY(-50%) translateX(${p * 52}vw)`;
+    } else {
+      canvas.style.transform = 'translate(-50%, -50%)';
+    }
 
     // Animate mask: fade-right at start → fade-left at end
     const lm   = Math.round(p * 12);
