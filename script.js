@@ -63,7 +63,11 @@ window.scrollTo(0, 0);
     const img = frames[index];
     if (!img || !img.complete || !img.naturalWidth) return;
     const cw = canvas.width, ch = canvas.height;
-    const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+    const isMobile = window.innerWidth <= 768;
+    // Mobile: contain (full frame visible) — Desktop: cover (fills canvas)
+    const scale = isMobile
+      ? Math.min(cw / img.naturalWidth, ch / img.naturalHeight)
+      : Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
     const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
     const ox = (cw - w) / 2, oy = (ch - h) / 2;
     ctx.clearRect(0, 0, cw, ch);
@@ -100,13 +104,18 @@ window.scrollTo(0, 0);
       canvas.style.transform = 'translate(-50%, -50%)';
     }
 
-    // Animate mask: fade-right at start → fade-left at end
-    const lm   = Math.round(p * 12);
-    const rm   = Math.round(75 + p * 25);
-    const rt   = Math.round(90 + p * 25);
-    const mask = `linear-gradient(to right, transparent 0%, black ${lm}%, black ${rm}%, transparent ${rt}%)`;
-    canvas.style.webkitMaskImage = mask;
-    canvas.style.maskImage       = mask;
+    // Animate mask: desktop only — mobile shows full frame without mask
+    if (window.innerWidth > 768) {
+      const lm   = Math.round(p * 12);
+      const rm   = Math.round(75 + p * 25);
+      const rt   = Math.round(90 + p * 25);
+      const mask = `linear-gradient(to right, transparent 0%, black ${lm}%, black ${rm}%, transparent ${rt}%)`;
+      canvas.style.webkitMaskImage = mask;
+      canvas.style.maskImage       = mask;
+    } else {
+      canvas.style.webkitMaskImage = 'none';
+      canvas.style.maskImage       = 'none';
+    }
 
     // Fade out hero text in the first 60% of the scroll
     const textOpacity = Math.max(0, 1 - p / 0.6);
