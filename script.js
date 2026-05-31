@@ -78,7 +78,8 @@ window.scrollTo(0, 0);
 
   function getTarget() {
     const rect     = section.getBoundingClientRect();
-    const total    = section.offsetHeight - window.innerHeight;
+    const vh       = document.documentElement.clientHeight; // stable on iOS
+    const total    = section.offsetHeight - vh;
     const scrolled = Math.max(0, -rect.top);
     return Math.min(scrolled / total, 1) * (frameCount - 1);
   }
@@ -86,8 +87,10 @@ window.scrollTo(0, 0);
   function loop() {
     const target = getTarget();
     const diff   = target - current;
+    const isMob  = window.innerWidth <= 768;
     if (Math.abs(diff) > 0.05) {
-      current += diff * 0.18;
+      // Direct mapping on mobile (no lag on touch), smooth lerp on desktop
+      current += isMob ? diff : diff * 0.18;
       drawFrame(Math.round(current));
     } else if (current !== target) {
       current = target;
@@ -156,6 +159,7 @@ window.scrollTo(0, 0);
   }
 
   window.addEventListener('resize', resizeCanvas);
+  window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 200));
   resizeCanvas();
   requestAnimationFrame(loop);
 })();
