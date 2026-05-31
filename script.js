@@ -131,8 +131,8 @@ window.scrollTo(0, 0);
       const slideY = `calc(-50% + ${(1 - lblP) * -40}px)`;
       heroScrollLbl.style.opacity       = lblP;
       heroScrollLbl.style.transform     = window.innerWidth <= 768
-        ? `translate(-50%, ${slideY})`
-        : `translateY(${slideY})`;
+        ? 'translate(-50%, -50%)'          // mobile: pure fade, no shift
+        : `translateY(${slideY})`;          // desktop: slide in from top
       heroScrollLbl.style.pointerEvents = lblP >= 1 ? 'auto' : 'none';
     }
 
