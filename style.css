@@ -1260,8 +1260,8 @@ body.lightbox-open > footer {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 50%;
-    height: 50%;
+    width: 65%;
+    height: 65%;
     opacity: 0.2;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 75%, transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 75%, transparent 100%);

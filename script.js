@@ -64,7 +64,6 @@ window.scrollTo(0, 0);
     if (!img || !img.complete || !img.naturalWidth) return;
     const cw = canvas.width, ch = canvas.height;
     const isMobile = window.innerWidth <= 768;
-    // Mobile: contain (full frame visible) — Desktop: cover (fills canvas)
     const scale = isMobile
       ? Math.min(cw / img.naturalWidth, ch / img.naturalHeight)
       : Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
