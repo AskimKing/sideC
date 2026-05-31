@@ -232,6 +232,14 @@ nav {
   z-index: 1;
 }
 
+.hero-cta .btn-solid,
+.hero-cta .btn-outline,
+.hero-scroll-cta .btn-solid,
+.hero-scroll-cta .btn-outline {
+  min-width: 200px;
+  text-align: center;
+}
+
 .hero-scroll-label {
   position: fixed;
   left: 8%;
@@ -1290,6 +1298,11 @@ body.lightbox-open > footer {
   .btn-solid,
   .btn-outline { padding: 12px 26px; font-size: 0.8rem; }
 
+  .hero-cta .btn-solid,
+  .hero-cta .btn-outline,
+  .hero-scroll-cta .btn-solid,
+  .hero-scroll-cta .btn-outline { min-width: 200px; text-align: center; }
+
   /* Cookie banner */
   .cookie-inner { flex-direction: column; gap: 14px; }
   .cookie-btns { width: 100%; justify-content: center; }
@@ -1329,6 +1342,11 @@ body.lightbox-open > footer {
 
   .btn-solid,
   .btn-outline { padding: 11px 20px; font-size: 0.76rem; width: 100%; text-align: center; }
+
+  .hero-cta .btn-solid,
+  .hero-cta .btn-outline,
+  .hero-scroll-cta .btn-solid,
+  .hero-scroll-cta .btn-outline { min-width: 200px; width: auto; }
 
   .page-title { font-size: clamp(2rem, 10vw, 3rem); }
 }
