@@ -1235,7 +1235,7 @@ body.lightbox-open > footer {
   .hero {
     align-items: center;
     text-align: center;
-    padding: 100px 24px 80px;
+    padding: calc(100px - 15vh) 24px calc(80px + 15vh);
     justify-content: center;
   }
 
