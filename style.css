@@ -1353,5 +1353,7 @@ body.lightbox-open > footer {
 
   .hero-scroll-cta { justify-content: center; gap: 12px; }
 
+  .hero-scroll-label { top: calc(50% - 15vh); }
+
   .page-title { font-size: clamp(2rem, 10vw, 3rem); }
 }
