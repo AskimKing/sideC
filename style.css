@@ -1243,7 +1243,7 @@ body.lightbox-open > footer {
   .hero {
     align-items: center;
     text-align: center;
-    padding: calc(100px - 15vh) 24px calc(80px + 15vh);
+    padding: calc(100px - 5vh) 24px calc(80px + 5vh);
     justify-content: center;
   }
 
@@ -1306,6 +1306,11 @@ body.lightbox-open > footer {
 
   .hero-scroll-cta { justify-content: center; }
 
+  /* Match scroll-label text sizes & spacing to hero text so buttons align */
+  .hero-scroll-h1 { font-size: clamp(2rem, 11vw, 3.8rem); white-space: normal; }
+  .hero-scroll-sub { font-size: 0.78rem; letter-spacing: 0.16em; }
+  .hero-scroll-cta { margin-top: calc(48px + 20vh); }
+
   /* Cookie banner */
   .cookie-inner { flex-direction: column; gap: 14px; }
   .cookie-btns { width: 100%; justify-content: center; }
@@ -1351,9 +1356,12 @@ body.lightbox-open > footer {
   .hero-scroll-cta .btn-solid,
   .hero-scroll-cta .btn-outline { min-width: 200px; width: auto; }
 
-  .hero-scroll-cta { justify-content: center; gap: 12px; }
+  .hero-scroll-cta { justify-content: center; gap: 12px; margin-top: calc(48px + 20vh); }
 
   .hero-scroll-label { top: calc(50% - 15vh); }
+
+  .hero-scroll-h1 { font-size: clamp(1.7rem, 9vw, 2.8rem); white-space: normal; }
+  .hero-scroll-sub { font-size: 0.7rem; letter-spacing: 0.12em; }
 
   .page-title { font-size: clamp(2rem, 10vw, 3rem); }
 }
