@@ -241,11 +241,25 @@ function equalizeScrollLines() {
   }
 }
 
+function alignScrollLabelMobile() {
+  if (window.innerWidth > 768) return;
+  const heroH1El    = document.querySelector('.hero h1');
+  const scrollLabel = document.getElementById('heroScrollLabel');
+  if (!heroH1El || !scrollLabel) return;
+
+  const h1Top     = heroH1El.getBoundingClientRect().top;
+  const lblHeight = scrollLabel.getBoundingClientRect().height;
+  // translate(-50%,-50%) means the element center is at `top`
+  // so to align label top with h1 top: top = h1Top + lblHeight/2
+  scrollLabel.style.top = (h1Top + lblHeight / 2) + 'px';
+}
+
 document.fonts.ready.then(() => {
   equalizeScrollLines();
-  setTimeout(equalizeScrollLines, 150); // fallback after clamp layout settles
+  alignScrollLabelMobile();
+  setTimeout(() => { equalizeScrollLines(); alignScrollLabelMobile(); }, 150);
 });
-window.addEventListener('resize', equalizeScrollLines);
+window.addEventListener('resize', () => { equalizeScrollLines(); alignScrollLabelMobile(); });
 
 document.addEventListener('DOMContentLoaded', () => {
   const btn      = document.getElementById('menuBtn');
