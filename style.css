@@ -1261,6 +1261,7 @@ body.lightbox-open > footer {
   .hero-cta {
     justify-content: center;
     gap: 12px;
+    margin-top: calc(48px + 20vh);
   }
 
   /* Canvas — centered, 50% smaller on mobile */
