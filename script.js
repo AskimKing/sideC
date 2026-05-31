@@ -125,8 +125,11 @@ window.scrollTo(0, 0);
     // Fade in scroll label from top after hero text is gone
     const lblP = Math.max(0, (p - 0.6) / 0.25);
     if (heroScrollLbl) {
+      const slideY = `calc(-50% + ${(1 - lblP) * -40}px)`;
       heroScrollLbl.style.opacity       = lblP;
-      heroScrollLbl.style.transform     = `translateY(calc(-50% + ${(1 - lblP) * -40}px))`;
+      heroScrollLbl.style.transform     = window.innerWidth <= 768
+        ? `translate(-50%, ${slideY})`
+        : `translateY(${slideY})`;
       heroScrollLbl.style.pointerEvents = lblP >= 1 ? 'auto' : 'none';
     }
 
