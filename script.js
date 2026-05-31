@@ -78,7 +78,9 @@ window.scrollTo(0, 0);
 
   function getTarget() {
     const rect     = section.getBoundingClientRect();
-    const vh       = document.documentElement.clientHeight; // stable on iOS
+    const vh       = window.innerWidth <= 768
+      ? document.documentElement.clientHeight  // stable on iOS
+      : window.innerHeight;                    // reliable on desktop
     const total    = section.offsetHeight - vh;
     const scrolled = Math.max(0, -rect.top);
     return Math.min(scrolled / total, 1) * (frameCount - 1);
@@ -242,15 +244,19 @@ function equalizeScrollLines() {
 }
 
 function alignScrollLabelMobile() {
-  if (window.innerWidth > 768) return;
-  const heroH1El    = document.querySelector('.hero h1');
   const scrollLabel = document.getElementById('heroScrollLabel');
-  if (!heroH1El || !scrollLabel) return;
+  if (!scrollLabel) return;
+
+  if (window.innerWidth > 768) {
+    scrollLabel.style.top = ''; // clear any leftover mobile inline style
+    return;
+  }
+
+  const heroH1El = document.querySelector('.hero h1');
+  if (!heroH1El) return;
 
   const h1Top     = heroH1El.getBoundingClientRect().top;
   const lblHeight = scrollLabel.getBoundingClientRect().height;
-  // translate(-50%,-50%) means the element center is at `top`
-  // so to align label top with h1 top: top = h1Top + lblHeight/2
   scrollLabel.style.top = (h1Top + lblHeight / 2) + 'px';
 }
 
