@@ -1303,6 +1303,8 @@ body.lightbox-open > footer {
   .hero-scroll-cta .btn-solid,
   .hero-scroll-cta .btn-outline { min-width: 200px; text-align: center; }
 
+  .hero-scroll-cta { justify-content: center; }
+
   /* Cookie banner */
   .cookie-inner { flex-direction: column; gap: 14px; }
   .cookie-btns { width: 100%; justify-content: center; }
@@ -1347,6 +1349,8 @@ body.lightbox-open > footer {
   .hero-cta .btn-outline,
   .hero-scroll-cta .btn-solid,
   .hero-scroll-cta .btn-outline { min-width: 200px; width: auto; }
+
+  .hero-scroll-cta { justify-content: center; gap: 12px; }
 
   .page-title { font-size: clamp(2rem, 10vw, 3rem); }
 }
