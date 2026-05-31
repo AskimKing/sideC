@@ -163,7 +163,7 @@ nav {
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
-  padding: 120px 8% 80px 40px;
+  padding: calc(120px - 15vh) 8% calc(80px + 15vh) 40px;
   text-align: right;
 }
 
