@@ -150,7 +150,7 @@ nav {
    ============================================= */
 
 .frame-scroll-section {
-  height: 180vh;
+  height: 540vh;
   position: relative;
 }
 
@@ -250,6 +250,28 @@ nav {
   pointer-events: none;
   z-index: 2;
   text-align: left;
+}
+
+.hero-viral-label {
+  position: fixed;
+  right: 8%;
+  top: 50%;
+  touch-action: pan-y;
+  transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  text-align: right;
+}
+
+.hvl-line1,
+.hvl-line2 {
+  display: block;
+  white-space: nowrap;
+}
+
+.hvl-line2 {
+  color: var(--orange);
 }
 
 .hero-scroll-h1 {
@@ -1267,6 +1289,8 @@ body.lightbox-open > footer {
     margin-top: calc(48px + 20vh);
   }
 
+  .frame-scroll-section { height: 420vh; }
+
   /* Canvas — centered, 50% smaller on mobile */
   #frameCanvas {
     left: 50%;
@@ -1308,6 +1332,13 @@ body.lightbox-open > footer {
   .hero-scroll-cta .btn-outline { min-width: 200px; text-align: center; }
 
   .hero-scroll-cta { justify-content: center; }
+
+  .hero-viral-label {
+    right: auto;
+    left: 50%;
+    top: calc(50% - 5vh);
+    text-align: center;
+  }
 
   /* Match scroll-label text sizes & spacing to hero text so buttons align */
   .hero-scroll-h1 { font-size: clamp(2rem, 11vw, 3.8rem); white-space: normal; }
@@ -1363,7 +1394,7 @@ body.lightbox-open > footer {
 
   .hero-scroll-label { top: calc(50% - 5vh); left: 50%; text-align: center; }
 
-  .frame-scroll-section { height: 140vh; }
+  .frame-scroll-section { height: 420vh; }
 
   .hero-scroll-h1 { font-size: clamp(1.7rem, 9vw, 2.8rem); white-space: normal; }
   .hero-scroll-sub { font-size: 0.7rem; letter-spacing: 0.12em; }

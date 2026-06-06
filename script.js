@@ -43,7 +43,7 @@ window.scrollTo(0, 0);
   if (!canvas || !section) return;
 
   const ctx        = canvas.getContext('2d');
-  const frameCount = 73;
+  const frameCount = 219; // frame_0001.png – frame_0219.png
   const frames     = new Array(frameCount);
   let   loaded     = 0;
   let   current    = 0;
@@ -52,6 +52,7 @@ window.scrollTo(0, 0);
   const heroSub       = section.querySelector('.hero-sub');
   const heroCta       = section.querySelector('.hero-cta');
   const heroScrollLbl = document.getElementById('heroScrollLabel');
+  const heroViralLbl  = document.getElementById('heroViralLabel');
 
   function resizeCanvas() {
     canvas.width  = canvas.offsetWidth  || Math.round(window.innerWidth * 0.6);
@@ -70,10 +71,12 @@ window.scrollTo(0, 0);
     const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
     const ox = (cw - w) / 2, oy = (ch - h) / 2;
     ctx.clearRect(0, 0, cw, ch);
+    ctx.filter = index <= 73 ? 'brightness(1.15)' : 'none';
     ctx.drawImage(img, ox, oy, w, h);
+    ctx.filter = 'none';
     // Cover watermark in lower-right corner
     ctx.fillStyle = '#000000';
-    ctx.fillRect(ox + w * 0.72, oy + h * 0.9136, w * 0.28, h * 0.0864);
+    ctx.fillRect(ox + w * 0.92, oy + h * 0.9136, w * 0.28, h * 0.0864);
   }
 
   function getTarget() {
@@ -99,43 +102,57 @@ window.scrollTo(0, 0);
       drawFrame(Math.round(current));
     }
 
-    const p = current / (frameCount - 1); // 0 → 1
+    // p over phases 1+2 (frames 0-145); clamped at 1 during phase 3
+    const p12  = Math.min(current / 145, 1);
+    // Phase 3 starts exactly when Math.round(current) first hits 146 (frame_0001c)
+    const inP3 = current >= 145.5;
+    // q3: 0 at frame_0001c (index 146) → 1 at frame_0073c (index 218)
+    const q3   = inP3 ? Math.min(Math.max(0, (current - 146) / 72), 1) : 0;
 
-    // Slide canvas to the right (desktop only)
+    // Desktop: pan right (phases 1+2) then back left (phase 3)
     if (window.innerWidth > 768) {
-      canvas.style.transform = `translateY(-50%) translateX(${p * 52}vw)`;
-    } else {
-      canvas.style.transform = 'translate(-50%, -50%)';
-    }
+      const slideX = inP3 ? (1 - q3) * 52 : p12 * 52;
+      canvas.style.transform = `translateY(-50%) translateX(${slideX}vw)`;
 
-    // Animate mask: desktop only — mobile shows full frame without mask
-    if (window.innerWidth > 768) {
-      const lm   = Math.round(p * 12);
-      const rm   = Math.round(75 + p * 25);
-      const rt   = Math.round(90 + p * 25);
+      const qMask = inP3 ? (1 - q3) : p12;
+      const lm   = Math.round(qMask * 12);
+      const rm   = Math.round(75 + qMask * 25);
+      const rt   = Math.round(90 + qMask * 25);
       const mask = `linear-gradient(to right, transparent 0%, black ${lm}%, black ${rm}%, transparent ${rt}%)`;
       canvas.style.webkitMaskImage = mask;
       canvas.style.maskImage       = mask;
     } else {
+      canvas.style.transform       = 'translate(-50%, -50%)';
       canvas.style.webkitMaskImage = 'none';
       canvas.style.maskImage       = 'none';
     }
 
-    // Fade out hero text in the first 60% of the scroll
-    const textOpacity = Math.max(0, 1 - p / 0.6);
+    // Hero text: fade out in first 60% of phases 1+2
+    const textOpacity = Math.max(0, 1 - p12 / 0.6);
     if (heroH1)  heroH1.style.opacity  = textOpacity;
     if (heroSub) heroSub.style.opacity = textOpacity;
     if (heroCta) heroCta.style.opacity = textOpacity;
 
-    // Fade in scroll label from top after hero text is gone
-    const lblP = Math.max(0, (p - 0.6) / 0.25);
+    // Scroll label: fade in during phases 1+2, fade out during phase 3
+    const lblIn = Math.max(0, (p12 - 0.6) / 0.25);
     if (heroScrollLbl) {
-      const slideY = `calc(-50% + ${(1 - lblP) * -40}px)`;
-      heroScrollLbl.style.opacity       = lblP;
+      const lblOpacity = inP3 ? Math.max(0, 1 - Math.max(0, current - 151) / 67) : lblIn;
+      const slideY     = `calc(-50% + ${(1 - lblIn) * -40}px)`;
+      heroScrollLbl.style.opacity       = lblOpacity;
       heroScrollLbl.style.transform     = window.innerWidth <= 768
-        ? 'translate(-50%, -50%)'          // mobile: pure fade, no shift
-        : `translateY(${slideY})`;          // desktop: slide in from top
-      heroScrollLbl.style.pointerEvents = lblP >= 1 ? 'auto' : 'none';
+        ? 'translate(-50%, -50%)'
+        : inP3 ? 'translateY(-50%)' : `translateY(${slideY})`;
+      heroScrollLbl.style.pointerEvents = (lblIn >= 1 && !inP3) ? 'auto' : 'none';
+    }
+
+    // Viral label (right side): pure fade in as NLM fades out (current 173 → 218)
+    if (heroViralLbl) {
+      const viralP = Math.max(0, Math.min(1, (current - 151) / 67));
+      heroViralLbl.style.opacity       = viralP;
+      heroViralLbl.style.transform     = window.innerWidth <= 768
+        ? 'translate(-50%, -50%)'
+        : 'translateY(-50%)';
+      heroViralLbl.style.pointerEvents = viralP >= 1 ? 'auto' : 'none';
     }
 
     requestAnimationFrame(loop);
@@ -152,7 +169,7 @@ window.scrollTo(0, 0);
   };
   frames[0] = firstImg;
 
-  // Load remaining frames
+  // Load remaining frames 2-219 (indices 1-218)
   for (let i = 2; i <= frameCount; i++) {
     const img = new Image();
     img.src = 'frame_' + String(i).padStart(4, '0') + '.png';
