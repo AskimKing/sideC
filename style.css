@@ -235,7 +235,9 @@ nav {
 .hero-cta .btn-solid,
 .hero-cta .btn-outline,
 .hero-scroll-cta .btn-solid,
-.hero-scroll-cta .btn-outline {
+.hero-scroll-cta .btn-outline,
+.hero-viral-cta .btn-solid,
+.hero-viral-cta .btn-outline {
   min-width: 200px;
   text-align: center;
 }
@@ -262,6 +264,14 @@ nav {
   pointer-events: none;
   z-index: 2;
   text-align: right;
+}
+
+.hero-viral-cta {
+  margin-top: 48px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .hvl-line1,
@@ -1339,6 +1349,14 @@ body.lightbox-open > footer {
     top: calc(50% - 5vh);
     text-align: center;
   }
+
+  .hero-viral-cta {
+    justify-content: center;
+    margin-top: calc(48px + 20vh);
+  }
+
+  .hero-viral-cta .btn-solid,
+  .hero-viral-cta .btn-outline { min-width: 200px; text-align: center; }
 
   /* Match scroll-label text sizes & spacing to hero text so buttons align */
   .hero-scroll-h1 { font-size: clamp(2rem, 11vw, 3.8rem); white-space: normal; }

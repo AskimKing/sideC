@@ -76,7 +76,7 @@ window.scrollTo(0, 0);
     ctx.filter = 'none';
     // Cover watermark in lower-right corner
     ctx.fillStyle = '#000000';
-    ctx.fillRect(ox + w * 0.92, oy + h * 0.9136, w * 0.28, h * 0.0864);
+    ctx.fillRect(ox + w * 0.85, oy + h * 0.85, w * 0.15, h * 0.15);
   }
 
   function getTarget() {
@@ -128,7 +128,7 @@ window.scrollTo(0, 0);
     }
 
     // Hero text: fade out in first 60% of phases 1+2
-    const textOpacity = Math.max(0, 1 - p12 / 0.6);
+    const textOpacity = Math.max(0, 1 - p12 / 0.51);
     if (heroH1)  heroH1.style.opacity  = textOpacity;
     if (heroSub) heroSub.style.opacity = textOpacity;
     if (heroCta) heroCta.style.opacity = textOpacity;
@@ -136,7 +136,7 @@ window.scrollTo(0, 0);
     // Scroll label: fade in during phases 1+2, fade out during phase 3
     const lblIn = Math.max(0, (p12 - 0.6) / 0.25);
     if (heroScrollLbl) {
-      const lblOpacity = inP3 ? Math.max(0, 1 - Math.max(0, current - 151) / 67) : lblIn;
+      const lblOpacity = inP3 ? Math.max(0, 1 - Math.max(0, current - 151) / 57) : lblIn;
       const slideY     = `calc(-50% + ${(1 - lblIn) * -40}px)`;
       heroScrollLbl.style.opacity       = lblOpacity;
       heroScrollLbl.style.transform     = window.innerWidth <= 768
@@ -145,9 +145,9 @@ window.scrollTo(0, 0);
       heroScrollLbl.style.pointerEvents = (lblIn >= 1 && !inP3) ? 'auto' : 'none';
     }
 
-    // Viral label (right side): pure fade in as NLM fades out (current 173 → 218)
+    // Viral label: fades in over 34 frames (151→185), stays visible until end
     if (heroViralLbl) {
-      const viralP = Math.max(0, Math.min(1, (current - 151) / 67));
+      const viralP = Math.max(0, Math.min(1, (current - 151) / 29));
       heroViralLbl.style.opacity       = viralP;
       heroViralLbl.style.transform     = window.innerWidth <= 768
         ? 'translate(-50%, -50%)'
@@ -181,6 +181,74 @@ window.scrollTo(0, 0);
   window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 200));
   resizeCanvas();
   requestAnimationFrame(loop);
+
+  // ---- Two-stage scroll snap ----
+  // Stage 0 = frame 0 (hero), Stage 1 = frame 123 (NLM), Stage 2 = frame 180 (viral)
+  const snapFrames = [0, 145, 218];
+  let stageIdx  = 0;
+  let inTransit = false;
+
+  function goToStage(idx) {
+    if (idx < 0 || idx >= snapFrames.length || inTransit) return;
+    stageIdx  = idx;
+    inTransit = true;
+    const vh    = window.innerWidth <= 768
+      ? document.documentElement.clientHeight : window.innerHeight;
+    const total = section.offsetHeight - vh;
+    window.scrollTo({
+      top: section.offsetTop + (snapFrames[idx] / (frameCount - 1)) * total,
+      behavior: 'smooth'
+    });
+    setTimeout(() => { inTransit = false; }, 1100);
+  }
+
+  // Desktop: one scroll gesture advances exactly one stage.
+  // Trackpads fire many events per gesture — only the first of a new gesture counts.
+  let lastWheelTime = 0;
+  window.addEventListener('wheel', (e) => {
+    if (window.innerWidth <= 768) return;
+    const rect      = section.getBoundingClientRect();
+    const goingDown = e.deltaY > 0;
+    if (rect.top > 0) return;                       // above section — don't intercept
+    if (rect.bottom <= window.innerHeight) return;  // below section — don't intercept
+    // At last stage scrolling down → release to section end
+    if (stageIdx >= snapFrames.length - 1 && goingDown) return;
+    // At first stage scrolling up → release above section
+    if (stageIdx <= 0 && !goingDown) return;
+    e.preventDefault();
+    if (inTransit) return;
+    const now = Date.now();
+    if (now - lastWheelTime < 350) return;          // same gesture — ignore
+    lastWheelTime = now;
+    if (goingDown) goToStage(stageIdx + 1);
+    else           goToStage(stageIdx - 1);
+  }, { passive: false });
+
+  // Mobile: debounce snap to nearest stage after scroll ends
+  let mobSnapTid  = null;
+  let mobSnapping = false;
+  window.addEventListener('scroll', () => {
+    if (window.innerWidth > 768 || mobSnapping) return;
+    clearTimeout(mobSnapTid);
+    mobSnapTid = setTimeout(() => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top > 10) return;
+      const t = getTarget();
+      if (t > snapFrames[snapFrames.length - 1] + 15) return;
+      const nearest = snapFrames.reduce((a, b) =>
+        Math.abs(b - t) < Math.abs(a - t) ? b : a);
+      if (Math.abs(nearest - t) < 1.5) return;
+      stageIdx    = snapFrames.indexOf(nearest);
+      mobSnapping = true;
+      const vh    = document.documentElement.clientHeight;
+      const total = section.offsetHeight - vh;
+      window.scrollTo({
+        top: section.offsetTop + (nearest / (frameCount - 1)) * total,
+        behavior: 'smooth'
+      });
+      setTimeout(() => { mobSnapping = false; }, 800);
+    }, 200);
+  }, { passive: true });
 })();
 
 // ---- Nav Panels (Startseite / Über uns / Dienstleistungen — index.html only) ----
