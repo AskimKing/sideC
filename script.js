@@ -66,17 +66,18 @@ window.scrollTo(0, 0);
     const cw = canvas.width, ch = canvas.height;
     const isMobile = window.innerWidth <= 768;
     const scale = isMobile
-      ? Math.min(cw / img.naturalWidth, ch / img.naturalHeight)
-      : Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+      ? Math.min(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9
+      : Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9;
     const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
-    const ox = (cw - w) / 2, oy = (ch - h) / 2;
+    const ox = (cw - w) / 2, oy = (ch - h) / 2 - ch * 0.05;
     ctx.clearRect(0, 0, cw, ch);
     ctx.filter = index <= 73 ? 'brightness(1.15)' : 'none';
     ctx.drawImage(img, ox, oy, w, h);
     ctx.filter = 'none';
     // Cover watermark in lower-right corner
     ctx.fillStyle = '#000000';
-    ctx.fillRect(ox + w * 0.85, oy + h * 0.85, w * 0.15, h * 0.15);
+    const rectW = index >= 169 ? w * 0.13 : w * 0.14;
+    ctx.fillRect(ox + w * (1 - rectW / w), oy + h * 0.88, rectW, h * 0.12);
   }
 
   function getTarget() {
