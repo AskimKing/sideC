@@ -179,6 +179,7 @@ nav {
   mask-image: linear-gradient(to right, black 75%, transparent 90%);
   opacity: 0.45;
   z-index: 0;
+  will-change: transform;
   pointer-events: none;
 }
 

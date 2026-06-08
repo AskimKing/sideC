@@ -54,30 +54,42 @@ window.scrollTo(0, 0);
   const heroScrollLbl = document.getElementById('heroScrollLabel');
   const heroViralLbl  = document.getElementById('heroViralLabel');
 
-  function resizeCanvas() {
-    canvas.width  = canvas.offsetWidth  || Math.round(window.innerWidth * 0.6);
-    canvas.height = canvas.offsetHeight || window.innerHeight;
-    drawFrame(Math.round(current));
-  }
+  // Cached geometry — all frames share the same source dimensions
+  let geom = null;
 
-  function drawFrame(index) {
-    const img = frames[index];
-    if (!img || !img.complete || !img.naturalWidth) return;
+  function calcGeom(img) {
     const cw = canvas.width, ch = canvas.height;
     const isMobile = window.innerWidth <= 768;
     const scale = isMobile
       ? Math.min(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9
       : Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9;
     const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
-    const ox = (cw - w) / 2, oy = (ch - h) / 2 - ch * 0.05;
+    geom = { cw, ch, w, h, ox: (cw - w) / 2, oy: (ch - h) / 2 - ch * 0.05 };
+  }
+
+  function resizeCanvas() {
+    canvas.width  = canvas.offsetWidth  || Math.round(window.innerWidth * 0.6);
+    canvas.height = canvas.offsetHeight || window.innerHeight;
+    geom = null; // force recalculate on next draw
+    drawFrame(Math.round(current));
+  }
+
+  function drawFrame(index) {
+    const img = frames[index];
+    if (!img || !img.complete || !img.naturalWidth) return;
+    if (!geom) calcGeom(img);
+    const { cw, ch, w, h, ox, oy } = geom;
     ctx.clearRect(0, 0, cw, ch);
-    ctx.filter = index <= 73 ? 'brightness(1.15)' : 'none';
     ctx.drawImage(img, ox, oy, w, h);
-    ctx.filter = 'none';
-    // Cover watermark in lower-right corner
+    // Brightness for frames 0–73: white overlay is GPU-friendly unlike ctx.filter
+    if (index <= 73) {
+      ctx.fillStyle = 'rgba(255,255,255,0.13)';
+      ctx.fillRect(ox, oy, w, h);
+    }
+    // Cover watermark
+    const rectW = index >= 169 ? w * 0.11 : w * 0.12;
     ctx.fillStyle = '#000000';
-    const rectW = index >= 169 ? w * 0.13 : w * 0.14;
-    ctx.fillRect(ox + w * (1 - rectW / w), oy + h * 0.88, rectW, h * 0.12);
+    ctx.fillRect(ox + w - rectW, oy + h * 0.89, rectW, h * 0.11);
   }
 
   function getTarget() {
@@ -138,11 +150,10 @@ window.scrollTo(0, 0);
     const lblIn = Math.max(0, (p12 - 0.6) / 0.25);
     if (heroScrollLbl) {
       const lblOpacity = inP3 ? Math.max(0, 1 - Math.max(0, current - 151) / 57) : lblIn;
-      const slideY     = `calc(-50% + ${(1 - lblIn) * -40}px)`;
       heroScrollLbl.style.opacity       = lblOpacity;
       heroScrollLbl.style.transform     = window.innerWidth <= 768
         ? 'translate(-50%, -50%)'
-        : inP3 ? 'translateY(-50%)' : `translateY(${slideY})`;
+        : 'translateY(-50%)';
       heroScrollLbl.style.pointerEvents = (lblIn >= 1 && !inP3) ? 'auto' : 'none';
     }
 
