@@ -1275,12 +1275,12 @@ body.lightbox-open > footer {
   nav { padding: 16px 20px; }
   .dropdown { right: 20px; }
 
-  /* Hero — center everything */
+  /* Hero: text anchored below nav, shifted 10vh down, buttons anchored above footer */
   .hero {
     align-items: center;
     text-align: center;
-    padding: calc(100px - 5vh) 24px calc(80px + 5vh);
-    justify-content: center;
+    padding: max(80px, 21vh) 24px max(100px, 14vh);
+    justify-content: flex-start;
   }
 
   .hero h1 {
@@ -1294,25 +1294,65 @@ body.lightbox-open > footer {
     letter-spacing: 0.16em;
   }
 
+  /* Push CTA to bottom of the available space */
   .hero-cta {
     justify-content: center;
     gap: 12px;
-    margin-top: calc(48px + 20vh);
+    margin-top: auto;
   }
 
   .frame-scroll-section { height: 420vh; }
 
-  /* Canvas — centered, 50% smaller on mobile */
+  /* Canvas — background on mobile, shifted down with content */
   #frameCanvas {
     left: 50%;
-    top: 50%;
+    top: 60%;
     transform: translate(-50%, -50%);
-    width: 65%;
-    height: 65%;
-    opacity: 0.2;
+    width: 90%;
+    height: 55%;
+    opacity: 0.45;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 75%, transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 75%, transparent 100%);
   }
+
+  /* Scroll + viral overlays: full-screen, mirror hero layout exactly */
+  .hero-scroll-label,
+  .hero-viral-label {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    width: 100%;
+    transform: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: max(80px, 21vh) 24px max(100px, 14vh);
+    text-align: center;
+  }
+
+  /* CTA inside overlays: same as hero-cta — pushed to bottom */
+  .hero-scroll-cta,
+  .hero-viral-cta {
+    margin-top: auto;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  /* All hero buttons: centered, proportional width */
+  .hero-cta .btn-solid,
+  .hero-cta .btn-outline,
+  .hero-scroll-cta .btn-solid,
+  .hero-scroll-cta .btn-outline,
+  .hero-viral-cta .btn-solid,
+  .hero-viral-cta .btn-outline {
+    min-width: min(200px, 80vw);
+    text-align: center;
+  }
+
+  /* Match overlay text sizes to hero */
+  .hero-scroll-h1 { font-size: clamp(2rem, 11vw, 3.8rem); white-space: normal; }
+  .hero-scroll-sub { font-size: 0.78rem; letter-spacing: 0.16em; }
+  .hvl-line1, .hvl-line2 { white-space: normal; }
 
   /* Nav panels */
   .nav-panel-inner { padding: 24px 20px 28px; }
@@ -1336,33 +1376,6 @@ body.lightbox-open > footer {
   /* Buttons */
   .btn-solid,
   .btn-outline { padding: 12px 26px; font-size: 0.8rem; }
-
-  .hero-cta .btn-solid,
-  .hero-cta .btn-outline,
-  .hero-scroll-cta .btn-solid,
-  .hero-scroll-cta .btn-outline { min-width: 200px; text-align: center; }
-
-  .hero-scroll-cta { justify-content: center; }
-
-  .hero-viral-label {
-    right: auto;
-    left: 50%;
-    top: calc(50% - 5vh);
-    text-align: center;
-  }
-
-  .hero-viral-cta {
-    justify-content: center;
-    margin-top: calc(48px + 20vh);
-  }
-
-  .hero-viral-cta .btn-solid,
-  .hero-viral-cta .btn-outline { min-width: 200px; text-align: center; }
-
-  /* Match scroll-label text sizes & spacing to hero text so buttons align */
-  .hero-scroll-h1 { font-size: clamp(2rem, 11vw, 3.8rem); white-space: normal; }
-  .hero-scroll-sub { font-size: 0.78rem; letter-spacing: 0.16em; }
-  .hero-scroll-cta { margin-top: calc(48px + 20vh); }
 
   /* Cookie banner */
   .cookie-inner { flex-direction: column; gap: 14px; }
@@ -1391,7 +1404,10 @@ body.lightbox-open > footer {
     letter-spacing: 0.12em;
   }
 
-  .hero-cta { flex-direction: column; align-items: center; }
+  /* Stack buttons vertically on very small screens */
+  .hero-cta,
+  .hero-scroll-cta,
+  .hero-viral-cta { flex-direction: column; align-items: center; }
 
   nav { padding: 14px 16px; }
   .dropdown { right: 16px; }
@@ -1402,18 +1418,14 @@ body.lightbox-open > footer {
   .page-wrap { padding: 100px 16px 160px; }
 
   .btn-solid,
-  .btn-outline { padding: 11px 20px; font-size: 0.76rem; width: 100%; text-align: center; }
+  .btn-outline { padding: 11px 20px; font-size: 0.76rem; }
 
   .hero-cta .btn-solid,
   .hero-cta .btn-outline,
   .hero-scroll-cta .btn-solid,
-  .hero-scroll-cta .btn-outline { min-width: 200px; width: auto; }
-
-  .hero-scroll-cta { justify-content: center; gap: 12px; margin-top: calc(48px + 20vh); }
-
-  .hero-scroll-label { top: calc(50% - 5vh); left: 50%; text-align: center; }
-
-  .frame-scroll-section { height: 420vh; }
+  .hero-scroll-cta .btn-outline,
+  .hero-viral-cta .btn-solid,
+  .hero-viral-cta .btn-outline { width: min(240px, 80vw); }
 
   .hero-scroll-h1 { font-size: clamp(1.7rem, 9vw, 2.8rem); white-space: normal; }
   .hero-scroll-sub { font-size: 0.7rem; letter-spacing: 0.12em; }

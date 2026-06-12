@@ -60,7 +60,9 @@ window.scrollTo(0, 0);
   function calcGeom(img) {
     const cw = canvas.width, ch = canvas.height;
     const isMobile = window.innerWidth <= 768;
-    const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9;
+    const scale = isMobile
+      ? Math.min(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9
+      : Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9;
     const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
     geom = { cw, ch, w, h, ox: (cw - w) / 2, oy: (ch - h) / 2 - ch * 0.05 };
   }
@@ -145,7 +147,7 @@ window.scrollTo(0, 0);
       const lblOpacity = inP3 ? Math.max(0, 1 - Math.max(0, current - 151) / 57) : lblIn;
       heroScrollLbl.style.opacity       = lblOpacity;
       heroScrollLbl.style.transform     = window.innerWidth <= 768
-        ? 'translate(-50%, -50%)'
+        ? 'none'
         : 'translateY(-50%)';
       heroScrollLbl.style.pointerEvents = (lblIn >= 1 && !inP3) ? 'auto' : 'none';
     }
@@ -155,7 +157,7 @@ window.scrollTo(0, 0);
       const viralP = Math.max(0, Math.min(1, (current - 151) / 29));
       heroViralLbl.style.opacity       = viralP;
       heroViralLbl.style.transform     = window.innerWidth <= 768
-        ? 'translate(-50%, -50%)'
+        ? 'none'
         : 'translateY(-50%)';
       heroViralLbl.style.pointerEvents = viralP >= 1 ? 'auto' : 'none';
     }
@@ -336,18 +338,7 @@ function equalizeScrollLines() {
 function alignScrollLabelMobile() {
   const scrollLabel = document.getElementById('heroScrollLabel');
   if (!scrollLabel) return;
-
-  if (window.innerWidth > 768) {
-    scrollLabel.style.top = ''; // clear any leftover mobile inline style
-    return;
-  }
-
-  const heroH1El = document.querySelector('.hero h1');
-  if (!heroH1El) return;
-
-  const h1Top     = heroH1El.getBoundingClientRect().top;
-  const lblHeight = scrollLabel.getBoundingClientRect().height;
-  scrollLabel.style.top = (h1Top + lblHeight / 2) + 'px';
+  scrollLabel.style.top = ''; // CSS handles all positioning
 }
 
 document.fonts.ready.then(() => {
