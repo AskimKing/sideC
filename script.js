@@ -60,9 +60,7 @@ window.scrollTo(0, 0);
   function calcGeom(img) {
     const cw = canvas.width, ch = canvas.height;
     const isMobile = window.innerWidth <= 768;
-    const scale = isMobile
-      ? Math.min(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9
-      : Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9;
+    const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9;
     const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
     geom = { cw, ch, w, h, ox: (cw - w) / 2, oy: (ch - h) / 2 - ch * 0.05 };
   }
@@ -81,11 +79,6 @@ window.scrollTo(0, 0);
     const { cw, ch, w, h, ox, oy } = geom;
     ctx.clearRect(0, 0, cw, ch);
     ctx.drawImage(img, ox, oy, w, h);
-    // Brightness for frames 0–73: white overlay is GPU-friendly unlike ctx.filter
-    if (index <= 73) {
-      ctx.fillStyle = 'rgba(255,255,255,0.13)';
-      ctx.fillRect(ox, oy, w, h);
-    }
     // Cover watermark
     const rectW = index >= 169 ? w * 0.11 : w * 0.12;
     ctx.fillStyle = '#000000';
