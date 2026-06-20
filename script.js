@@ -231,31 +231,6 @@ window.scrollTo(0, 0);
     else           goToStage(stageIdx - 1);
   }, { passive: false });
 
-  // Mobile: debounce snap to nearest stage after scroll ends
-  let mobSnapTid  = null;
-  let mobSnapping = false;
-  window.addEventListener('scroll', () => {
-    if (window.innerWidth > 768 || mobSnapping) return;
-    clearTimeout(mobSnapTid);
-    mobSnapTid = setTimeout(() => {
-      const rect = section.getBoundingClientRect();
-      if (rect.top > 10) return;
-      const t = getTarget();
-      if (t > snapFrames[snapFrames.length - 1] + 15) return;
-      const nearest = snapFrames.reduce((a, b) =>
-        Math.abs(b - t) < Math.abs(a - t) ? b : a);
-      if (Math.abs(nearest - t) < 1.5) return;
-      stageIdx    = snapFrames.indexOf(nearest);
-      mobSnapping = true;
-      const vh    = document.documentElement.clientHeight;
-      const total = section.offsetHeight - vh;
-      window.scrollTo({
-        top: section.offsetTop + (nearest / (frameCount - 1)) * total,
-        behavior: 'smooth'
-      });
-      setTimeout(() => { mobSnapping = false; }, 800);
-    }, 200);
-  }, { passive: true });
 })();
 
 // ---- Nav Panels (Startseite / Über uns / Dienstleistungen — index.html only) ----
