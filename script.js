@@ -58,19 +58,31 @@ window.scrollTo(0, 0);
   let geom = null;
 
   function calcGeom(img) {
-    const cw = canvas.width, ch = canvas.height;
+    const dpr      = window.devicePixelRatio || 1;
+    const cw       = canvas.width  / dpr;   // CSS pixels
+    const ch       = canvas.height / dpr;
     const isMobile = window.innerWidth <= 768;
-    const scale = isMobile
+    const scale    = isMobile
       ? Math.min(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9
       : Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * 0.9;
-    const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
-    geom = { cw, ch, w, h, ox: (cw - w) / 2, oy: (ch - h) / 2 - ch * 0.05 };
+    const w  = img.naturalWidth  * scale;
+    const h  = img.naturalHeight * scale;
+    const ox = (cw - w) / 2;
+    // Desktop: nudge image slightly up for visual balance; mobile: true center
+    const oy = isMobile ? (ch - h) / 2 : (ch - h) / 2 - ch * 0.05;
+    geom = { cw, ch, w, h, ox, oy };
   }
 
   function resizeCanvas() {
-    canvas.width  = canvas.offsetWidth  || Math.round(window.innerWidth * 0.6);
-    canvas.height = canvas.offsetHeight || window.innerHeight;
-    geom = null; // force recalculate on next draw
+    const dpr  = window.devicePixelRatio || 1;
+    const isMob = window.innerWidth <= 768;
+    const cssW = canvas.offsetWidth  || Math.round(window.innerWidth  * (isMob ? 0.9    : 0.5148));
+    const cssH = canvas.offsetHeight || Math.round(window.innerHeight * (isMob ? 0.55   : 0.5306));
+    canvas.width  = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    // Reset context and apply DPR scale so all draw calls use CSS-pixel coordinates
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    geom = null;
     drawFrame(Math.round(current));
   }
 
@@ -80,6 +92,8 @@ window.scrollTo(0, 0);
     if (!geom) calcGeom(img);
     const { cw, ch, w, h, ox, oy } = geom;
     ctx.clearRect(0, 0, cw, ch);
+    ctx.fillStyle = '#000000';
+    ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(img, ox, oy, w, h);
     // Cover watermark
     const rectW = index >= 169 ? w * 0.11 : w * 0.12;
