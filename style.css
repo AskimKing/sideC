@@ -1275,11 +1275,14 @@ body.lightbox-open > footer {
   nav { padding: 16px 20px; }
   .dropdown { right: 20px; }
 
-  /* Hero: text anchored below nav, shifted 10vh down, buttons anchored above footer */
+  /* Hero: text anchored below nav, shifted 10vh down, buttons anchored above footer.
+     Use dvh so the hero fills the *visible* viewport on iOS (excludes browser chrome). */
   .hero {
+    height: 100vh;     /* fallback for older browsers */
+    height: 100dvh;    /* adjusts for iOS address bar / browser chrome */
     align-items: center;
     text-align: center;
-    padding: max(80px, 21vh) 24px max(100px, 14vh);
+    padding: max(80px, 21vh) 24px max(110px, 15vh);
     justify-content: flex-start;
   }
 
@@ -1326,7 +1329,7 @@ body.lightbox-open > footer {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: max(80px, 21vh) 24px max(100px, 14vh);
+    padding: max(80px, 21vh) 24px max(110px, 15vh);
     text-align: center;
   }
 

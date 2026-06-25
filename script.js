@@ -43,10 +43,17 @@ window.scrollTo(0, 0);
   if (!canvas || !section) return;
 
   const ctx        = canvas.getContext('2d');
-  const frameCount = 219; // frame_0001.png – frame_0219.png
+  const frameCount = 219; // frame_0001–0073, Frame0001b–Frame0073b, frame_0147–0219
   const frames     = new Array(frameCount);
   let   loaded     = 0;
   let   current    = 0;
+
+  // Returns the src path for a 0-based frame index
+  function frameSrc(i) {
+    if (i < 73)  return 'Assets/frame_'  + String(i + 1).padStart(4, '0') + '.png';
+    if (i < 146) return 'Assets/Frame'   + String(i - 72).padStart(4, '0') + 'b.png';
+    return               'Assets/frame_' + String(i + 1).padStart(4, '0') + '.png';
+  }
 
   const heroH1        = section.querySelector('h1');
   const heroSub       = section.querySelector('.hero-sub');
@@ -95,7 +102,6 @@ window.scrollTo(0, 0);
     ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(img, ox, oy, w, h);
-    // Cover watermark
     const rectW = index >= 169 ? w * 0.11 : w * 0.12;
     ctx.fillStyle = '#000000';
     ctx.fillRect(ox + w - rectW, oy + h * 0.89, rectW, h * 0.11);
@@ -118,17 +124,18 @@ window.scrollTo(0, 0);
     if (Math.abs(diff) > 0.05) {
       // Direct mapping on mobile (no lag on touch), smooth lerp on desktop
       current += isMob ? diff : diff * 0.18;
+      current  = Math.max(0, Math.min(frameCount - 1, current));
       drawFrame(Math.round(current));
     } else if (current !== target) {
       current = target;
       drawFrame(Math.round(current));
     }
 
-    // p over phases 1+2 (frames 0-145); clamped at 1 during phase 3
+    // p over phase 1+2 (indices 0-145); clamped at 1 during phase 3
     const p12  = Math.min(current / 145, 1);
-    // Phase 3 starts exactly when Math.round(current) first hits 146 (frame_0001c)
+    // Phase 3 starts at index 146 (frame_0147–)
     const inP3 = current >= 145.5;
-    // q3: 0 at frame_0001c (index 146) → 1 at frame_0073c (index 218)
+    // q3: 0 at index 146 → 1 at index 218
     const q3   = inP3 ? Math.min(Math.max(0, (current - 146) / 72), 1) : 0;
 
     // Desktop: pan right (phases 1+2) then back left (phase 3)
@@ -166,7 +173,7 @@ window.scrollTo(0, 0);
       heroScrollLbl.style.pointerEvents = (lblIn >= 1 && !inP3) ? 'auto' : 'none';
     }
 
-    // Viral label: fades in over 34 frames (151→185), stays visible until end
+    // Viral label: fades in 5 frames into phase 3 (151→180)
     if (heroViralLbl) {
       const viralP = Math.max(0, Math.min(1, (current - 151) / 29));
       heroViralLbl.style.opacity       = viralP;
@@ -182,7 +189,7 @@ window.scrollTo(0, 0);
   // Load frame 1 first at high priority and draw immediately
   const firstImg = new Image();
   firstImg.fetchPriority = 'high';
-  firstImg.src = 'frame_0001.png';
+  firstImg.src = frameSrc(0);
   firstImg.onload = () => {
     frames[0] = firstImg;
     loaded++;
@@ -190,12 +197,12 @@ window.scrollTo(0, 0);
   };
   frames[0] = firstImg;
 
-  // Load remaining frames 2-219 (indices 1-218)
-  for (let i = 2; i <= frameCount; i++) {
+  // Load remaining frames (indices 1-218)
+  for (let i = 1; i < frameCount; i++) {
     const img = new Image();
-    img.src = 'frame_' + String(i).padStart(4, '0') + '.png';
+    img.src = frameSrc(i);
     img.onload = () => { loaded++; };
-    frames[i - 1] = img;
+    frames[i] = img;
   }
 
   window.addEventListener('resize', resizeCanvas);
@@ -204,7 +211,7 @@ window.scrollTo(0, 0);
   requestAnimationFrame(loop);
 
   // ---- Two-stage scroll snap ----
-  // Stage 0 = frame 0 (hero), Stage 1 = frame 123 (NLM), Stage 2 = frame 180 (viral)
+  // Stage 0 = frame 0, Stage 1 = frame 145 (NLM), Stage 2 = frame 218 (viral)
   const snapFrames = [0, 145, 218];
   let stageIdx  = 0;
   let inTransit = false;
@@ -232,6 +239,11 @@ window.scrollTo(0, 0);
     const goingDown = e.deltaY > 0;
     if (rect.top > 0) return;                       // above section — don't intercept
     if (rect.bottom <= window.innerHeight) return;  // below section — don't intercept
+    // Re-sync stageIdx from actual frame position (handles manual scroll / keyboard nav)
+    if (!inTransit) {
+      stageIdx = snapFrames.reduce((best, _, i) =>
+        Math.abs(snapFrames[i] - current) < Math.abs(snapFrames[best] - current) ? i : best, 0);
+    }
     // At last stage scrolling down → release to section end
     if (stageIdx >= snapFrames.length - 1 && goingDown) return;
     // At first stage scrolling up → release above section
