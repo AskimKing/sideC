@@ -102,9 +102,14 @@ window.scrollTo(0, 0);
     ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, cw, ch);
     ctx.drawImage(img, ox, oy, w, h);
-    const rectW = index >= 169 ? w * 0.11 : w * 0.12;
+    // Cover the watermark; from frame 196 on the camera's corner reaches ~0.908w, so keep the box right of it
     ctx.fillStyle = '#000000';
-    ctx.fillRect(ox + w - rectW, oy + h * 0.89, rectW, h * 0.11);
+    if (index >= 195) {
+      ctx.fillRect(ox + w * 0.909, oy + h * 0.89, w * 0.091, h * 0.06);
+      ctx.fillRect(ox + w * 0.881, oy + h * 0.935, w * 0.119, h * 0.065);
+    } else {
+      ctx.fillRect(ox + w * 0.88, oy + h * 0.89, w * 0.12, h * 0.11);
+    }
   }
 
   function getTarget() {
