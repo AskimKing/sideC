@@ -1309,7 +1309,7 @@ body.lightbox-open > footer {
   /* Canvas — background on mobile, shifted down with content */
   #frameCanvas {
     left: 50%;
-    top: 60%;
+    top: 55%;
     transform: translate(-50%, -50%);
     width: 90%;
     height: 55%;
